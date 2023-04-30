@@ -11,14 +11,23 @@ const ShippingScreen = ({ history }) => {
 
   const [address, setAddress] = useState(shippingAddress.address)
   const [city, setCity] = useState(shippingAddress.city)
-  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode)
+  const [phoneNumber, setPhoneNo] = useState(shippingAddress.phoneNumber)
+  const [phoneNumberValid, setPhoneNumberValid] = useState(true);
+  const [phoneNumberError, setPhoneNumberError] = useState('');
   const [country, setCountry] = useState(shippingAddress.country)
 
   const dispatch = useDispatch()
 
   const submitHandler = (e) => {
     e.preventDefault()
-    dispatch(saveShippingAddress({ address, city, postalCode, country }))
+
+    if (phoneNumber.length !== 10) {
+      setPhoneNumberValid(false);
+      setPhoneNumberError('Phone number must be exactly 10 digits');
+      return;
+    }
+
+    dispatch(saveShippingAddress({ address, city, phoneNumber, country }))
     history.push('/payment')
   }
 
@@ -49,16 +58,27 @@ const ShippingScreen = ({ history }) => {
           ></Form.Control>
         </Form.Group>
 
-        <Form.Group controlId='postalCode'>
-          <Form.Label>Postal Code</Form.Label>
-          <Form.Control
-            type='text'
-            placeholder='Enter postal code'
-            value={postalCode}
-            required
-            onChange={(e) => setPostalCode(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+        <Form.Group controlId='phoneNumber'>
+  <Form.Label>Phone Number</Form.Label>
+  <Form.Control
+    type='tel'
+    placeholder='Enter phone number'
+    value={phoneNumber}
+    onChange={(e) => {
+      const inputPhoneNumber = e.target.value.replace(/\D/g, '');
+      if (inputPhoneNumber.length <= 10) {
+        setPhoneNo(inputPhoneNumber);
+        setPhoneNumberValid(true); // input is valid, clear error message
+      } else {
+        setPhoneNumberValid(false); // input is invalid, show error message
+      }
+    }}
+    isInvalid={!phoneNumberValid} // apply "is-invalid" class to control if input is invalid
+  ></Form.Control>
+  <Form.Control.Feedback type='invalid'>
+    Please enter a valid phone number (exactly 10 digits)
+  </Form.Control.Feedback>
+</Form.Group>
 
         <Form.Group controlId='country'>
           <Form.Label>Country</Form.Label>

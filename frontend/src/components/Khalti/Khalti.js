@@ -1,6 +1,6 @@
 import React from "react";
 import KhaltiCheckout from "khalti-checkout-web";
-import config from "./KhaltiConfig";
+import config from "./KhaltiConfig.js";
 
 
 export default function Khalti({orderDetails}) {
@@ -26,7 +26,7 @@ export default function Khalti({orderDetails}) {
   return (
     <div>
       <button
-        onClick={() => checkout.show({ amount: Number(order.totalPrice) * 100 })}
+        onClick={() => checkout.show({ amount: Number(order.totalPrice) *100})}
         style={buttonStyles}
       >
         Pay Via Khalti
