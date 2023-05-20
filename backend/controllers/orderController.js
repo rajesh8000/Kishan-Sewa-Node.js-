@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
 import axios from 'axios';
+import myKey from '../../frontend/src/components/Khalti/KhaltiKey.js';
 // @desc    Create new order
 // @route   POST /api/orders
 // @access  Private
@@ -94,6 +95,7 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error('Order not found');
   }
+
 });
 
 // @desc    Get logged in user orders
@@ -114,27 +116,27 @@ const getOrders = asyncHandler(async (req, res) => {
 
 const verifyPayment = asyncHandler(async (req, res) => {
   let sendData = true;
-  // let data = req.body;
-  // console log data
-
-   let data = {
-   "token": "d7MQhqSz8czuQnJxx4vLWR",
-   "amount": 1000
-  };
+  let data = req.body;
+  
+ 
+  
+  //  let data = {
+  //  "token": "yJuTqzEed9QMTHBo8zGosd",
+  //  "amount": 100
+  // };
 
   let config = {
-    headers: {
-      Authorization: 'Key test_secret_key_30fa44788cec473d964fd0c045d60860',
-    },
+    headers: {'Authorization': 'Key test_secret_key_30fa44788cec473d964fd0c045d60860'}
   };
 
-  axios
-    .post('https://khalti.com/api/v2/payment/verify/', data, config)
-    .then((response) => {
-      console.log(response.data);
-      //
-      sendData = true;
-      res.json({ verified: sendData });
+  axios.post("https://khalti.com/api/v2/payment/verify/", data, config)
+  .then(response => {
+  console.log(response.data);
+
+
+  
+  
+
     })
     .catch((error) => {
       console.log(error);

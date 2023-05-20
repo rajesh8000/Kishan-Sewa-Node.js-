@@ -29,7 +29,10 @@ const RegisterScreen = ({ location, history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault()
-    if (password !== confirmPassword) {
+    if(password.length<4 || password.length > 12){
+      setMessage('Password must be between 4 to 12 characters long');
+    }
+    else if (password !== confirmPassword) {
       setMessage('Passwords do not match')
     } else {
       dispatch(register(name, email, password))

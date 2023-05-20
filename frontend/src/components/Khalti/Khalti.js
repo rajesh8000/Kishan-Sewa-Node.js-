@@ -1,36 +1,49 @@
 import React from "react";
+import { useEffect } from "react";
 import KhaltiCheckout from "khalti-checkout-web";
 import config from "./KhaltiConfig.js";
 
 
-export default function Khalti({orderDetails}) {
-    const {order} = orderDetails
+const Khalti = ({ orderDetails,onSuccess}) => {
+  const { order } = orderDetails;
 
-    config.productIdentity = order.orderItems[0].product;
-    config.productName = order.orderItems[0].name;
-   
+  config.productIdentity = order.orderItems[0].product;
+  config.productName = order.orderItems[0].name;
+  config.orderId = order._id;
+
+  const checkout = new KhaltiCheckout(config);
+
+  const handlePayment = () => {
+    checkout.show({ amount: Number(order.totalPrice) * 100 });
+
     
-    const checkout = new KhaltiCheckout(config);
- 
- 
-  
-  const buttonStyles = {
-    backgroundColor: "purple",
-    padding: "10px",
-    color: "white",
-    cursor: "pointer",
-    fontWeight: "bold",
-    border: "1px solid white",
+    
+
   };
+
+  useEffect(() => {
+    const handlePaymentSuccess = (payload) => {
+      
+      onSuccess(payload);
+    };
+
+    document.addEventListener("khalti-checkout-success", handlePaymentSuccess);
+
+    return () => {
+      document.removeEventListener(
+        "khalti-checkout-success",
+        handlePaymentSuccess
+      );
+    };
+  }, [onSuccess]);
+
+ 
 
   return (
     <div>
-      <button
-        onClick={() => checkout.show({ amount: Number(order.totalPrice) *100})}
-        style={buttonStyles}
-      >
-        Pay Via Khalti
-      </button>
+      <button onClick={handlePayment}>Pay Via Khalti</button>
     </div>
   );
-}
+};
+
+export default Khalti;

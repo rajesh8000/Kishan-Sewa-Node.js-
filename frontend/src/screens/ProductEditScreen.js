@@ -21,7 +21,7 @@ const ProductEditScreen = ({ match, history }) => {
   const [uploading, setUploading] = useState(false)
 
   const dispatch = useDispatch()
-
+  const [errors, setErrors] = useState({});
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
 
@@ -50,6 +50,9 @@ const ProductEditScreen = ({ match, history }) => {
     }
   }, [dispatch, history, productId, product, successUpdate])
 
+
+ 
+  
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0]
     const formData = new FormData()
@@ -73,8 +76,39 @@ const ProductEditScreen = ({ match, history }) => {
     }
   }
 
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {};
+  
+    // Validate the name field
+    if (name.trim() === '') {
+      newErrors.name = 'Name is required';
+      isValid = false;
+    }
+  
+    // Validate the price field
+    if (price <= 0) {
+      newErrors.price = 'Price must be greater than zero';
+      isValid = false;
+    }
+  
+    // Validate the image field
+    if (image.trim() === '') {
+      newErrors.image = 'Image URL is required';
+      isValid = false;
+    }
+  
+    // Validate other fields...
+  
+    setErrors(newErrors);
+  
+    return isValid;
+  };
+
+
   const submitHandler = (e) => {
     e.preventDefault()
+    if (validateForm()) {
     dispatch(
       updateProduct({
         _id: productId,
@@ -85,7 +119,7 @@ const ProductEditScreen = ({ match, history }) => {
         description,
         countInStock,
       })
-    )
+    )}
   }
 
   return (
@@ -110,6 +144,7 @@ const ProductEditScreen = ({ match, history }) => {
                 placeholder='Enter name'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                required
               ></Form.Control>
             </Form.Group>
 
@@ -120,6 +155,7 @@ const ProductEditScreen = ({ match, history }) => {
                 placeholder='Enter price'
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
+                required
               ></Form.Control>
             </Form.Group>
 
@@ -130,12 +166,14 @@ const ProductEditScreen = ({ match, history }) => {
                 placeholder='Enter image url'
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
+                required
               ></Form.Control>
               <Form.File
                 id='image-file'
                 label='Choose File'
                 custom
                 onChange={uploadFileHandler}
+                required
               ></Form.File>
               {uploading && <Loader />}
             </Form.Group>
@@ -147,6 +185,7 @@ const ProductEditScreen = ({ match, history }) => {
                 placeholder='Enter countInStock'
                 value={countInStock}
                 onChange={(e) => setCountInStock(e.target.value)}
+                required
               ></Form.Control>
             </Form.Group>
 
@@ -157,6 +196,7 @@ const ProductEditScreen = ({ match, history }) => {
                 placeholder='Enter category'
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
+                required
               ></Form.Control>
             </Form.Group>
 
@@ -167,6 +207,7 @@ const ProductEditScreen = ({ match, history }) => {
                 placeholder='Enter description'
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                required
               ></Form.Control>
             </Form.Group>
 

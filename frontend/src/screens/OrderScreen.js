@@ -70,12 +70,18 @@ const OrderScreen = ({ match, history }) => {
     } else if (!order.isPaid) {
       setSdkReady(true)
     }
-  }, [dispatch, orderId, successPay, successDeliver, order])
+  }, [dispatch, orderId, successPay, successDeliver, order, history, userInfo])
 
 
+  const handlePaymentSuccess = () => {
+    // Perform any necessary logic after successful payment
+    // Redirect to the homepage
+    history.push('/');
+  };
 
   const deliverHandler = () => {
     dispatch(deliverOrder(order))
+    history.push('/');
   }
 
   return loading ? (
@@ -94,8 +100,7 @@ const OrderScreen = ({ match, history }) => {
                 <strong>Name: </strong> {order.user.name}
               </p>
               <p>
-                <strong>Email: </strong>{' '}
-                <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
+                <strong>Email: </strong>{order.user.email}
               </p>
               <p>
                 <strong>Address:</strong>
@@ -122,11 +127,7 @@ const OrderScreen = ({ match, history }) => {
                 <strong>Method: </strong>
                 {order.paymentMethod}
               </p>
-              {order.isPaid ? (
-                <Message variant='success'>Paid on {order.paidAt}</Message>
-              ) : (
-                <Message variant='danger'>Not Paid</Message>
-              )}
+             
             </ListGroup.Item>
 
             <ListGroup.Item>
@@ -198,7 +199,7 @@ const OrderScreen = ({ match, history }) => {
                   {!sdkReady ? (
                     <Loader />
                   ) : (
-                   <Khalti orderDetails={orderDetails} />
+                   <Khalti orderDetails={orderDetails}  onSuccess={handlePaymentSuccess}/>
                   )}
                 </ListGroup.Item>
               )}

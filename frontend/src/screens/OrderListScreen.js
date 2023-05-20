@@ -40,7 +40,7 @@ const OrderListScreen = ({ history }) => {
               <th>USER</th>
               <th>DATE</th>
               <th>TOTAL</th>
-              <th>PAID</th>
+              
               <th>DELIVERED</th>
               <th></th>
             </tr>
@@ -50,18 +50,17 @@ const OrderListScreen = ({ history }) => {
             {orders.map((order) => (
               <tr key={order._id}>
                 <td>{order._id}</td>
-                {order.orderItems.map(p=>(<td>{p.name}</td>))}
+                <td>
+        {order.orderItems.map((p) => (
+          <div key={p._id}>
+            <p>{p.name}</p>
+          </div>
+        ))}
+      </td>
                 <td>{order.user && order.user.name}</td>
                 <td>{order.createdAt.substring(0, 10)}</td>
                 <td>NRS.{order.totalPrice}</td>
-                <td>
-                  {order.isPaid ? (
-                    order.paid && order.paidAt.substring(0, 10),
-                    <i className='fas fa-check' style={{ color: 'green' }}></i>
-                  ) : (
-                    <i className='fas fa-times' style={{ color: 'red' }}></i>
-                  )}
-                </td>
+                
                 <td>
                   {order.isDelivered ? (
                     order.delivered && order.deliveredAt.substring(0, 10),

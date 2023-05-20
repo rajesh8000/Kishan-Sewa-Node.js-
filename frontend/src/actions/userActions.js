@@ -24,7 +24,11 @@ import {
   USER_UPDATE_FAIL,
   USER_UPDATE_SUCCESS,
   USER_UPDATE_REQUEST,
+  // USER_RESET_EMAIL_REQUEST,
+  // USER_RESET_EMAIL_SUCCESS,
+  // USER_RESET_EMAIL_FAIL,
 } from '../constants/userConstants'
+      
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
 
 export const login = (email, password) => async (dispatch) => {
@@ -61,6 +65,7 @@ export const login = (email, password) => async (dispatch) => {
     })
   }
 }
+
 
 export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo')
@@ -303,3 +308,38 @@ export const updateUser = (user) => async (dispatch, getState) => {
     })
   }
 }
+
+// export const sendEmail = (email) => async (dispatch, getState) => {
+//   try {
+//     dispatch({
+//       type: USER_RESET_EMAIL_REQUEST,
+//     })
+
+//     const {
+//       userLogin: { userInfo },
+//     } = getState()
+
+//     const config = {
+//       headers: {
+//         'Content-Type': 'application/json',
+//         Authorization: `Bearer ${userInfo.token}`,
+//       },
+//     }
+
+//     const { data } = await axios.post('/api/users/email-send', { email }, config)
+
+//     dispatch({
+//       type: USER_RESET_EMAIL_SUCCESS,
+//       payload: data,
+//     })
+//   } catch (error) {
+//     dispatch({
+//       type: USER_RESET_EMAIL_FAIL,
+//       payload:
+//         error.response && error.response.data.message
+//           ? error.response.data.message
+//           : error.message,
+//     })
+//   }
+// }
+

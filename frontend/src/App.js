@@ -18,7 +18,9 @@ import UserEditScreen from './screens/UserEditScreen'
 import ProductListScreen from './screens/ProductListScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 import OrderListScreen from './screens/OrderListScreen'
-import Khalti from './components/Khalti/Khalti'
+import OtpForm from './screens/OtpForm'
+import ForgotPass from './screens/forgotPass'
+
 
 const App = () => {
   return (
@@ -32,6 +34,8 @@ const App = () => {
           <Route path='/placeorder' component={PlaceOrderScreen} />
           <Route path='/login' component={LoginScreen} />
           <Route path='/register' component={RegisterScreen} />
+          <Route path= '/reset-email' component={OtpForm}/>
+          <Route path= '/forgot/:id/:token' component={ForgotPass}/>
           <Route path='/profile' component={ProfileScreen} />
           <Route path='/product/:id' component={ProductScreen} />
           <Route path='/cart/:id?' component={CartScreen} />

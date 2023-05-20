@@ -3,4 +3,4 @@ const myKey = {
   secretKey: 'Key test_secret_key_30fa44788cec473d964fd0c045d60860',
 };
 
-export default myKey;
+module.exports = myKey;
